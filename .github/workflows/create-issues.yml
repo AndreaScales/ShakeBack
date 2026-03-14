@@ -1,9 +1,10 @@
-name: Create Project Issues from README
+name: Create Sprint Issues from README
 
 on:
   workflow_dispatch:
   push:
     paths:
+      - '.github/sprint-issues.json'
       - '.github/workflows/create-issues.yml'
 
 jobs:
@@ -13,172 +14,24 @@ jobs:
       issues: write
 
     steps:
-      - name: Create issues by day and role
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create labels and issues
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const issues = [
-              // Day 1
-              {
-                title: "[Day 1 | Product/UI Engineer] Landing Page with Resume Analyzer",
-                body: `## Day 1 — Product/UI Engineer
+            const fs = require('fs');
+            const issues = JSON.parse(fs.readFileSync('.github/sprint-issues.json', 'utf8'));
 
-**Sprint Goal:** Build the landing page with the Resume Analyzer UI.
-
-### Tasks
-- [ ] Scaffold the React + Next.js + TailwindCSS project
-- [ ] Build the landing page layout and hero section
-- [ ] Create the resume upload component (file input / drag-and-drop)
-- [ ] Build the Resume Analysis results UI (skills summary, career overview, strengths, improvement suggestions)
-- [ ] Wire up the frontend to the backend Resume AI endpoint
-- [ ] Ensure responsive design
-
-### Deliverable
-Landing page live with a functional Resume Analyzer UI that communicates with the backend.`,
-                labels: ["Day 1", "Product/UI Engineer"]
-              },
-              {
-                title: "[Day 1 | AI/Backend Engineer] Project Setup + Resume AI Endpoint",
-                body: `## Day 1 — AI/Backend Engineer
-
-**Sprint Goal:** Set up the project infrastructure and build the Resume AI endpoint.
-
-### Tasks
-- [ ] Initialize the FastAPI server project structure
-- [ ] Set up PostgreSQL database and connection
-- [ ] Integrate DigitalOcean Gradient AI SDK
-- [ ] Build the \`POST /resume/analyze\` endpoint
-- [ ] Implement prompt engineering for resume analysis (skills summary, career overview, strengths, improvement suggestions)
-- [ ] Test the endpoint with sample resumes
-
-### Deliverable
-A working \`POST /resume/analyze\` endpoint that returns an AI-generated breakdown of an uploaded resume.`,
-                labels: ["Day 1", "AI/Backend Engineer"]
-              },
-
-              // Day 2
-              {
-                title: "[Day 2 | Product/UI Engineer] Dashboard with Resume Analyzer + Career Plan",
-                body: `## Day 2 — Product/UI Engineer
-
-**Sprint Goal:** Build the user dashboard featuring the Resume Analyzer results and the AI-generated Career Strategy Plan.
-
-### Tasks
-- [ ] Design and build the main user dashboard layout
-- [ ] Integrate Resume Analyzer results into the dashboard
-- [ ] Build the Career Strategy Plan display component (30-day plan, week-by-week breakdown)
-- [ ] Add navigation between dashboard sections
-- [ ] Connect the Career Strategy UI to the backend endpoint
-
-### Deliverable
-A dashboard page displaying the Resume Analyzer output alongside a personalized 30-day career plan.`,
-                labels: ["Day 2", "Product/UI Engineer"]
-              },
-              {
-                title: "[Day 2 | AI/Backend Engineer] Career Strategy AI Endpoint",
-                body: `## Day 2 — AI/Backend Engineer
-
-**Sprint Goal:** Build the Career Strategy Generator AI endpoint.
-
-### Tasks
-- [ ] Build the \`POST /career/strategy\` endpoint
-- [ ] Implement prompt engineering for a personalized 30-day job search plan
-- [ ] Structure the plan by week (Week 1: Resume + networking, Week 2: Apply + interview prep, Week 3: Portfolio + skills, Week 4: Follow-ups + practice)
-- [ ] Ensure the plan is tailored to the user's skills, experience, and goals
-- [ ] Test the endpoint with varied user profiles
-
-### Deliverable
-A working \`POST /career/strategy\` endpoint that returns a structured, personalized 30-day job search plan.`,
-                labels: ["Day 2", "AI/Backend Engineer"]
-              },
-
-              // Day 3
-              {
-                title: "[Day 3 | Product/UI Engineer] Job Match, Interview Coach & Updated Dashboard",
-                body: `## Day 3 — Product/UI Engineer
-
-**Sprint Goal:** Build three feature pages (Job Match Analyzer, AI Interview Coach) and update the dashboard.
-
-### Tasks
-- [ ] Build the Job Match Analyzer page (job description input, match score display, missing keywords, resume bullet suggestions, cover letter output)
-- [ ] Build the AI Interview Coach page (job description input, AI-generated behavioral and technical questions)
-- [ ] Update the dashboard to link to all three feature pages
-- [ ] Integrate both pages with their respective backend endpoints
-- [ ] Ensure consistent UI/UX across all pages
-
-### Deliverable
-Three functional feature pages (Resume Analyzer, Job Match Analyzer, AI Interview Coach) accessible from the dashboard.`,
-                labels: ["Day 3", "Product/UI Engineer"]
-              },
-              {
-                title: "[Day 3 | AI/Backend Engineer] Job Match + Interview Coach AI Endpoints",
-                body: `## Day 3 — AI/Backend Engineer
-
-**Sprint Goal:** Build the Job Match Analyzer and AI Interview Coach endpoints.
-
-### Tasks
-- [ ] Build the \`POST /job/match\` endpoint
-  - [ ] Accept a job description and user resume
-  - [ ] Return a match score, missing keywords, tailored resume bullet suggestions, and a customized cover letter
-- [ ] Build the \`POST /interview/questions\` endpoint
-  - [ ] Accept a job description
-  - [ ] Return AI-generated behavioral and technical interview questions
-- [ ] Implement prompt engineering for both endpoints
-- [ ] Test both endpoints with real job descriptions
-
-### Deliverable
-Working \`POST /job/match\` and \`POST /interview/questions\` endpoints returning relevant, high-quality AI output.`,
-                labels: ["Day 3", "AI/Backend Engineer"]
-              },
-
-              // Day 4
-              {
-                title: "[Day 4 | Product/UI Engineer] Application Tracker + UI Polish",
-                body: `## Day 4 — Product/UI Engineer
-
-**Sprint Goal:** Build the Job Application Tracker dashboard and polish the full UI for a demo-ready MVP.
-
-### Tasks
-- [ ] Build the Application Tracker dashboard (company, role, status, notes, interview dates)
-- [ ] Add ability to add, edit, and update application entries
-- [ ] Build the Career Health Score display component
-- [ ] Polish UI across all pages (spacing, typography, color consistency, responsiveness)
-- [ ] Ensure the full user flow works end-to-end (upload → plan → match → track → practice)
-- [ ] Conduct a final UI review and fix any visual bugs
-
-### Deliverable
-A complete, demo-ready MVP with a functional Application Tracker and polished UI across all feature pages.`,
-                labels: ["Day 4", "Product/UI Engineer"]
-              },
-              {
-                title: "[Day 4 | AI/Backend Engineer] Application Tracker Backend + Final Integration",
-                body: `## Day 4 — AI/Backend Engineer
-
-**Sprint Goal:** Build the Application Tracker backend, implement the Career Health Score, and finalize all integrations.
-
-### Tasks
-- [ ] Build CRUD endpoints for the Application Tracker (\`POST\`, \`GET\`, \`PATCH\`, \`DELETE\` \`/applications\`)
-- [ ] Build the \`GET /career/health-score\` endpoint (AI-calculated score based on resume quality, application success, skill alignment, interview readiness)
-- [ ] Finalize database schema for applications
-- [ ] Ensure all endpoints are stable and handle errors gracefully
-- [ ] End-to-end integration testing with the frontend
-- [ ] Prepare the app for demo
-
-### Deliverable
-A fully integrated, demo-ready backend with Application Tracker CRUD, Career Health Score, and all AI endpoints operational.`,
-                labels: ["Day 4", "AI/Backend Engineer"]
-              }
-            ];
-
-            // Create labels if they don't exist
             const labelDefs = [
-              { name: "Day 1", color: "0075ca", description: "Tasks for Day 1 of the sprint" },
-              { name: "Day 2", color: "e4e669", description: "Tasks for Day 2 of the sprint" },
-              { name: "Day 3", color: "d93f0b", description: "Tasks for Day 3 of the sprint" },
-              { name: "Day 4", color: "0e8a16", description: "Tasks for Day 4 of the sprint" },
-              { name: "Product/UI Engineer", color: "7057ff", description: "Frontend and UI tasks" },
-              { name: "AI/Backend Engineer", color: "008672", description: "Backend and AI tasks" }
+              { name: 'Day 1', color: '0075ca', description: 'Tasks for Day 1 of the sprint' },
+              { name: 'Day 2', color: 'e4e669', description: 'Tasks for Day 2 of the sprint' },
+              { name: 'Day 3', color: 'd93f0b', description: 'Tasks for Day 3 of the sprint' },
+              { name: 'Day 4', color: '0e8a16', description: 'Tasks for Day 4 of the sprint' },
+              { name: 'Product/UI Engineer', color: '7057ff', description: 'Frontend and UI tasks' },
+              { name: 'AI/Backend Engineer', color: '008672', description: 'Backend and AI tasks' }
             ];
 
             for (const label of labelDefs) {
@@ -201,21 +54,19 @@ A fully integrated, demo-ready backend with Application Tracker CRUD, Career Hea
               }
             }
 
-            // Create each issue
-            for (const issue of issues) {
-              const existing = await github.rest.issues.listForRepo({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: "all",
-                per_page: 100
-              });
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'all',
+              per_page: 100
+            });
+            const existingTitles = new Set(existing.data.map(i => i.title));
 
-              const alreadyExists = existing.data.some(i => i.title === issue.title);
-              if (alreadyExists) {
+            for (const issue of issues) {
+              if (existingTitles.has(issue.title)) {
                 console.log(`Issue already exists: "${issue.title}"`);
                 continue;
               }
-
               const created = await github.rest.issues.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
