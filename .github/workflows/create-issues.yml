@@ -2,6 +2,9 @@ name: Create Project Issues from README
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/create-issues.yml'
 
 jobs:
   create-issues:
