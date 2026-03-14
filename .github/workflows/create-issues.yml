@@ -1,0 +1,91 @@
+name: Create Sprint Issues from README
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/sprint-issues.json'
+      - '.github/workflows/create-issues.yml'
+
+jobs:
+  create-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create labels and issues
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const issues = JSON.parse(fs.readFileSync('.github/sprint-issues.json', 'utf8'));
+
+            const labelDefs = [
+              { name: 'Day 1', color: '0075ca', description: 'Tasks for Day 1 of the sprint' },
+              { name: 'Day 2', color: 'e4e669', description: 'Tasks for Day 2 of the sprint' },
+              { name: 'Day 3', color: 'd93f0b', description: 'Tasks for Day 3 of the sprint' },
+              { name: 'Day 4', color: '0e8a16', description: 'Tasks for Day 4 of the sprint' },
+              { name: 'Product/UI Engineer', color: '7057ff', description: 'Frontend and UI tasks' },
+              { name: 'AI/Backend Engineer', color: '008672', description: 'Backend and AI tasks' }
+            ];
+
+            for (const label of labelDefs) {
+              try {
+                await github.rest.issues.getLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name
+                });
+                console.log(`Label "${label.name}" already exists.`);
+              } catch (e) {
+                if (e.status !== 404) {
+                  throw e;
+                }
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description
+                });
+                console.log(`Created label "${label.name}".`);
+              }
+            }
+
+            let existingTitles = new Set();
+            let page = 1;
+            while (true) {
+              const response = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                per_page: 100,
+                page: page
+              });
+              if (response.data.length === 0) break;
+              response.data.forEach(i => existingTitles.add(i.title));
+              if (response.data.length < 100) break;
+              page++;
+            }
+
+            for (const issue of issues) {
+              if (existingTitles.has(issue.title)) {
+                console.log(`Issue already exists: "${issue.title}"`);
+                continue;
+              }
+              const created = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: issue.title,
+                body: issue.body,
+                labels: issue.labels
+              });
+              console.log(`Created issue #${created.data.number}: ${issue.title}`);
+            }
