@@ -3,6 +3,8 @@ name: Create Sprint Issues from README
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - '.github/sprint-issues.json'
       - '.github/workflows/create-issues.yml'
@@ -43,6 +45,9 @@ jobs:
                 });
                 console.log(`Label "${label.name}" already exists.`);
               } catch (e) {
+                if (e.status !== 404) {
+                  throw e;
+                }
                 await github.rest.issues.createLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -54,13 +59,21 @@ jobs:
               }
             }
 
-            const existing = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'all',
-              per_page: 100
-            });
-            const existingTitles = new Set(existing.data.map(i => i.title));
+            let existingTitles = new Set();
+            let page = 1;
+            while (true) {
+              const response = await github.rest.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                per_page: 100,
+                page: page
+              });
+              if (response.data.length === 0) break;
+              response.data.forEach(i => existingTitles.add(i.title));
+              if (response.data.length < 100) break;
+              page++;
+            }
 
             for (const issue of issues) {
               if (existingTitles.has(issue.title)) {
