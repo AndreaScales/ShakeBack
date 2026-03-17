@@ -1,0 +1,42 @@
+[
+  {
+    "title": "[Day 1 | Product/UI Engineer] Landing Page with Resume Analyzer",
+    "labels": ["Day 1", "Product/UI Engineer"],
+    "body": "## Day 1 — Product/UI Engineer\n\n**Sprint Goal:** Build the landing page with the Resume Analyzer UI.\n\n### Tasks\n- [ ] Scaffold the React + Next.js + TailwindCSS project\n- [ ] Build the landing page layout and hero section\n- [ ] Create the resume upload component (file input / drag-and-drop)\n- [ ] Build the Resume Analysis results UI (skills summary, career overview, strengths, improvement suggestions)\n- [ ] Wire up the frontend to the backend Resume AI endpoint\n- [ ] Ensure responsive design\n\n### Deliverable\nLanding page live with a functional Resume Analyzer UI that communicates with the backend."
+  },
+  {
+    "title": "[Day 1 | AI/Backend Engineer] Project Setup + Resume AI Endpoint",
+    "labels": ["Day 1", "AI/Backend Engineer"],
+    "body": "## Day 1 — AI/Backend Engineer\n\n**Sprint Goal:** Set up the project infrastructure and build the Resume AI endpoint.\n\n### Tasks\n- [ ] Initialize the FastAPI server project structure\n- [ ] Set up PostgreSQL database and connection\n- [ ] Integrate DigitalOcean Gradient AI SDK\n- [ ] Build the `POST /resume/analyze` endpoint\n- [ ] Implement prompt engineering for resume analysis (skills summary, career overview, strengths, improvement suggestions)\n- [ ] Test the endpoint with sample resumes\n\n### Deliverable\nA working `POST /resume/analyze` endpoint that returns an AI-generated breakdown of an uploaded resume."
+  },
+  {
+    "title": "[Day 2 | Product/UI Engineer] Dashboard with Resume Analyzer + Career Plan",
+    "labels": ["Day 2", "Product/UI Engineer"],
+    "body": "## Day 2 — Product/UI Engineer\n\n**Sprint Goal:** Build the user dashboard featuring the Resume Analyzer results and the AI-generated Career Strategy Plan.\n\n### Tasks\n- [ ] Design and build the main user dashboard layout\n- [ ] Integrate Resume Analyzer results into the dashboard\n- [ ] Build the Career Strategy Plan display component (30-day plan, week-by-week breakdown)\n- [ ] Add navigation between dashboard sections\n- [ ] Connect the Career Strategy UI to the backend endpoint\n\n### Deliverable\nA dashboard page displaying the Resume Analyzer output alongside a personalized 30-day career plan."
+  },
+  {
+    "title": "[Day 2 | AI/Backend Engineer] Career Strategy AI Endpoint",
+    "labels": ["Day 2", "AI/Backend Engineer"],
+    "body": "## Day 2 — AI/Backend Engineer\n\n**Sprint Goal:** Build the Career Strategy Generator AI endpoint.\n\n### Tasks\n- [ ] Build the `POST /career/strategy` endpoint\n- [ ] Implement prompt engineering for a personalized 30-day job search plan\n- [ ] Structure the plan by week (Week 1: Resume + networking, Week 2: Apply + interview prep, Week 3: Portfolio + skills, Week 4: Follow-ups + practice)\n- [ ] Ensure the plan is tailored to the user's skills, experience, and goals\n- [ ] Test the endpoint with varied user profiles\n\n### Deliverable\nA working `POST /career/strategy` endpoint that returns a structured, personalized 30-day job search plan."
+  },
+  {
+    "title": "[Day 3 | Product/UI Engineer] Job Match, Interview Coach & Updated Dashboard",
+    "labels": ["Day 3", "Product/UI Engineer"],
+    "body": "## Day 3 — Product/UI Engineer\n\n**Sprint Goal:** Build three feature pages (Job Match Analyzer, AI Interview Coach) and update the dashboard.\n\n### Tasks\n- [ ] Build the Job Match Analyzer page (job description input, match score display, missing keywords, resume bullet suggestions, cover letter output)\n- [ ] Build the AI Interview Coach page (job description input, AI-generated behavioral and technical questions)\n- [ ] Update the dashboard to link to all three feature pages\n- [ ] Integrate both pages with their respective backend endpoints\n- [ ] Ensure consistent UI/UX across all pages\n\n### Deliverable\nThree functional feature pages (Resume Analyzer, Job Match Analyzer, AI Interview Coach) accessible from the dashboard."
+  },
+  {
+    "title": "[Day 3 | AI/Backend Engineer] Job Match + Interview Coach AI Endpoints",
+    "labels": ["Day 3", "AI/Backend Engineer"],
+    "body": "## Day 3 — AI/Backend Engineer\n\n**Sprint Goal:** Build the Job Match Analyzer and AI Interview Coach endpoints.\n\n### Tasks\n- [ ] Build the `POST /job/match` endpoint\n  - [ ] Accept a job description and user resume\n  - [ ] Return a match score, missing keywords, tailored resume bullet suggestions, and a customized cover letter\n- [ ] Build the `POST /interview/questions` endpoint\n  - [ ] Accept a job description\n  - [ ] Return AI-generated behavioral and technical interview questions\n- [ ] Implement prompt engineering for both endpoints\n- [ ] Test both endpoints with real job descriptions\n\n### Deliverable\nWorking `POST /job/match` and `POST /interview/questions` endpoints returning relevant, high-quality AI output."
+  },
+  {
+    "title": "[Day 4 | Product/UI Engineer] Application Tracker + UI Polish",
+    "labels": ["Day 4", "Product/UI Engineer"],
+    "body": "## Day 4 — Product/UI Engineer\n\n**Sprint Goal:** Build the Job Application Tracker dashboard and polish the full UI for a demo-ready MVP.\n\n### Tasks\n- [ ] Build the Application Tracker dashboard (company, role, status, notes, interview dates)\n- [ ] Add ability to add, edit, and update application entries\n- [ ] Build the Career Health Score display component\n- [ ] Polish UI across all pages (spacing, typography, color consistency, responsiveness)\n- [ ] Ensure the full user flow works end-to-end (upload → plan → match → track → practice)\n- [ ] Conduct a final UI review and fix any visual bugs\n\n### Deliverable\nA complete, demo-ready MVP with a functional Application Tracker and polished UI across all feature pages."
+  },
+  {
+    "title": "[Day 4 | AI/Backend Engineer] Application Tracker Backend + Final Integration",
+    "labels": ["Day 4", "AI/Backend Engineer"],
+    "body": "## Day 4 — AI/Backend Engineer\n\n**Sprint Goal:** Build the Application Tracker backend, implement the Career Health Score, and finalize all integrations.\n\n### Tasks\n- [ ] Build CRUD endpoints for the Application Tracker (`POST`, `GET`, `PATCH`, `DELETE` `/applications`)\n- [ ] Build the `GET /career/health-score` endpoint (AI-calculated score based on resume quality, application success, skill alignment, interview readiness)\n- [ ] Finalize database schema for applications\n- [ ] Ensure all endpoints are stable and handle errors gracefully\n- [ ] End-to-end integration testing with the frontend\n- [ ] Prepare the app for demo\n\n### Deliverable\nA fully integrated, demo-ready backend with Application Tracker CRUD, Career Health Score, and all AI endpoints operational."
+  }
+]
