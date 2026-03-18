@@ -123,6 +123,6 @@ Meet **Alex**, a product analyst recently laid off who needs to navigate a job s
 
 ---
 
-## License
+## Licenses 
 
 MIT
